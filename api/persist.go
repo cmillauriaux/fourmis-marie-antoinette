@@ -34,7 +34,6 @@ func (p *Persistance) GetAllPicture(ctx context.Context, cameraID int) ([]Pictur
 	q := datastore.NewQuery(picturesKind)
 	q.Filter("CameraID", cameraID)
 	q.Order("DateTime")
-	q = q.Limit(2)
 	nbElements, err := q.Count(ctx)
 	if err != nil {
 		return nil, err
