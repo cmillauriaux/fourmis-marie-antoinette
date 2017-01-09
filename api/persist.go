@@ -59,7 +59,7 @@ func (p *Persistance) AddPicture(ctx context.Context, picture *Picture) (*datast
 
 func (p *Persistance) PutDataTest(ctx context.Context) error {
 	for i := 00; i < 50; i++ {
-		picture := &Picture{CameraID: 1, DateTime: int64(201612011310 + i), FileName: string(201612011310+i) + ".jpg", Link: "https://storage.googleapis.com/ants-photos/11481992605"}
+		picture := &Picture{CameraID: 1, DateTime: int64(201612011310 + i), FileName: "11482059315", Link: "https://storage.googleapis.com/ants-photos/11482059315"}
 		key, err := p.AddPicture(ctx, picture)
 		if err != nil {
 			return err

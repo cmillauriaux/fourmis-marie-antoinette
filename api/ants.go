@@ -26,6 +26,7 @@ func init() {
 
 func getLastPicture(w http.ResponseWriter, r *http.Request) {
 	pic, _ := DB.GetLastPicture(appengine.NewContext(r), 1)
+	pic.Next = pic.DateTime + 60000
 	fmt.Fprint(w, structToJSON(pic))
 }
 
@@ -38,7 +39,6 @@ func getLastGIF(w http.ResponseWriter, r *http.Request) {
 	gif := makeGif(files, appengine.NewContext(r))
 	w.Header().Set("Content-Type", "image/gif")
 	w.Write(gif)
-	//fmt.Fprint(w, gif)
 }
 
 func makeTest(w http.ResponseWriter, r *http.Request) {

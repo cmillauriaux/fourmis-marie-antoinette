@@ -19,7 +19,7 @@ func makeGif(files []string, ctx context.Context) []byte {
 	for _, name := range files {
 
 		// Download file
-		resp, err := getFile(name, ctx)
+		resp, err := getFileFromURL(name, ctx)
 		if err != nil {
 			log.Println("Cannot download file : ", err)
 			continue
@@ -59,8 +59,16 @@ func makeGif(files []string, ctx context.Context) []byte {
 	return buffer.Bytes()
 }
 
-func getFile(url string, ctx context.Context) (io.ReadCloser, error) {
-	log.Println("GET FILE")
+func getFileFromURL(url string, ctx context.Context) (io.ReadCloser, error) {
+	client := urlfetch.Client(ctx)
+	resp, err := client.Get(url)
+	if err != nil {
+		return nil, err
+	}
+	return resp.Body, nil
+}
+
+func getFileFromDataStore(url string, ctx context.Context) (io.ReadCloser, error) {
 	client := urlfetch.Client(ctx)
 	resp, err := client.Get(url)
 	if err != nil {
@@ -70,14 +78,12 @@ func getFile(url string, ctx context.Context) (io.ReadCloser, error) {
 }
 
 func readImage(image io.ReadCloser) (image.Image, error) {
-	log.Println("READ IMAGE")
 	img, err := jpeg.Decode(image)
 
 	return img, err
 }
 
 func formatgif(img image.Image) (io.Reader, error) {
-	log.Println("FORMAT GIF")
 	r, w := io.Pipe()
 
 	var opt gif.Options
@@ -85,7 +91,6 @@ func formatgif(img image.Image) (io.Reader, error) {
 	go func() {
 		_ = gif.Encode(w, img, &opt)
 		w.Close()
-		log.Println("CLOSE GIF")
 	}()
 
 	return r, nil
