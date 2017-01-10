@@ -14,10 +14,35 @@ type Persistance struct {
 }
 
 func (p *Persistance) GetLastPicture(ctx context.Context, cameraID int) (*Picture, error) {
-	q := datastore.NewQuery(picturesKind)
-	q.Filter("CameraID", cameraID)
-	q.Order("-DateTime")
-	q = q.Limit(1)
+	q := datastore.NewQuery(picturesKind).Filter("CameraID =", cameraID).Order("-DateTime").Limit(1)
+	pictures := make([]Picture, 0, 1)
+	if _, err := q.GetAll(ctx, &pictures); err != nil {
+		return nil, err
+	}
+
+	if len(pictures) == 0 {
+		return nil, nil
+	}
+
+	return &pictures[0], nil
+}
+
+func (p *Persistance) GetPreviousPicture(ctx context.Context, cameraID int, dateTime int64) (*Picture, error) {
+	q := datastore.NewQuery(picturesKind).Filter("DateTime <", dateTime).Filter("CameraID =", cameraID).Order("-DateTime").Limit(1)
+	pictures := make([]Picture, 0, 1)
+	if _, err := q.GetAll(ctx, &pictures); err != nil {
+		return nil, err
+	}
+
+	if len(pictures) == 0 {
+		return nil, nil
+	}
+
+	return &pictures[0], nil
+}
+
+func (p *Persistance) GetNextPicture(ctx context.Context, cameraID int, dateTime int64) (*Picture, error) {
+	q := datastore.NewQuery(picturesKind).Filter("DateTime >", dateTime).Filter("CameraID =", cameraID).Order("-DateTime").Limit(1)
 	pictures := make([]Picture, 0, 1)
 	if _, err := q.GetAll(ctx, &pictures); err != nil {
 		return nil, err
@@ -31,9 +56,7 @@ func (p *Persistance) GetLastPicture(ctx context.Context, cameraID int) (*Pictur
 }
 
 func (p *Persistance) GetAllPicture(ctx context.Context, cameraID int) ([]Picture, error) {
-	q := datastore.NewQuery(picturesKind)
-	q.Filter("CameraID", cameraID)
-	q.Order("DateTime")
+	q := datastore.NewQuery(picturesKind).Filter("CameraID =", cameraID).Order("DateTime")
 	nbElements, err := q.Count(ctx)
 	if err != nil {
 		return nil, err

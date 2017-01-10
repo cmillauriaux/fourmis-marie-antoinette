@@ -5,6 +5,10 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/gorilla/mux"
+
+	"strconv"
+
 	"google.golang.org/appengine"
 )
 
@@ -16,17 +20,48 @@ func init() {
 	// Connect to DB
 	DB = &Persistance{}
 
-	http.HandleFunc("/api/pictures/last", getLastPicture)
-	http.HandleFunc("/api/pictures/previous", getLastPicture)
-	http.HandleFunc("/api/pictures/next", getLastPicture)
-	http.HandleFunc("/api/pictures/from", getLastPicture)
-	http.HandleFunc("/api/gif/last", getLastGIF)
-	http.HandleFunc("/api/test/generate", makeTest)
+	r := mux.NewRouter()
+	r.HandleFunc("/api/pictures/last", getLastPicture)
+	r.HandleFunc("/api/pictures/previous/{DateTime}", getPreviousPicture)
+	r.HandleFunc("/api/pictures/next/{DateTime}", getNextPicture)
+	r.HandleFunc("/api/gif/last", getLastGIF)
+	//r.HandleFunc("/api/test/generate", makeTest)
+
+	http.Handle("/", r)
 }
 
 func getLastPicture(w http.ResponseWriter, r *http.Request) {
-	pic, _ := DB.GetLastPicture(appengine.NewContext(r), 1)
+	pic, err := DB.GetLastPicture(appengine.NewContext(r), 1)
+	if err != nil {
+		fmt.Fprint(w, err.Error())
+	}
 	pic.Next = pic.DateTime + 60000
+	fmt.Fprint(w, structToJSON(pic))
+}
+
+func getPreviousPicture(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	dateTime, err := strconv.ParseInt(vars["DateTime"], 10, 64)
+	if err != nil {
+		fmt.Fprint(w, "Bad timestamp format")
+	}
+	pic, err := DB.GetPreviousPicture(appengine.NewContext(r), 1, dateTime)
+	if err != nil {
+		fmt.Fprint(w, err.Error())
+	}
+	fmt.Fprint(w, structToJSON(pic))
+}
+
+func getNextPicture(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	dateTime, err := strconv.ParseInt(vars["DateTime"], 10, 64)
+	if err != nil {
+		fmt.Fprint(w, "Bad timestamp format")
+	}
+	pic, err := DB.GetNextPicture(appengine.NewContext(r), 1, dateTime)
+	if err != nil {
+		fmt.Fprint(w, err.Error())
+	}
 	fmt.Fprint(w, structToJSON(pic))
 }
 
