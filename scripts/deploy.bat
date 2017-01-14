@@ -1,0 +1,1 @@
+goapp deploy -application prototype-149014 ..\api

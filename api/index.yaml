@@ -14,4 +14,9 @@ indexes:
   properties:
   - name: CameraID
   - name: DateTime
+
+- kind: Pictures
+  properties:
+  - name: CameraID
+  - name: DateTime
     direction: desc

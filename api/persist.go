@@ -42,7 +42,7 @@ func (p *Persistance) GetPreviousPicture(ctx context.Context, cameraID int, date
 }
 
 func (p *Persistance) GetNextPicture(ctx context.Context, cameraID int, dateTime int64) (*Picture, error) {
-	q := datastore.NewQuery(picturesKind).Filter("DateTime >", dateTime).Filter("CameraID =", cameraID).Order("-DateTime").Limit(1)
+	q := datastore.NewQuery(picturesKind).Filter("DateTime >", dateTime).Filter("CameraID =", cameraID).Order("DateTime").Limit(1)
 	pictures := make([]Picture, 0, 1)
 	if _, err := q.GetAll(ctx, &pictures); err != nil {
 		return nil, err

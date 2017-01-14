@@ -31,6 +31,7 @@ func init() {
 }
 
 func getLastPicture(w http.ResponseWriter, r *http.Request) {
+	w.Header().Add("Access-Control-Allow-Origin", "*")
 	pic, err := DB.GetLastPicture(appengine.NewContext(r), 1)
 	if err != nil {
 		fmt.Fprint(w, err.Error())
@@ -40,6 +41,7 @@ func getLastPicture(w http.ResponseWriter, r *http.Request) {
 }
 
 func getPreviousPicture(w http.ResponseWriter, r *http.Request) {
+	w.Header().Add("Access-Control-Allow-Origin", "*")
 	vars := mux.Vars(r)
 	dateTime, err := strconv.ParseInt(vars["DateTime"], 10, 64)
 	if err != nil {
@@ -53,6 +55,7 @@ func getPreviousPicture(w http.ResponseWriter, r *http.Request) {
 }
 
 func getNextPicture(w http.ResponseWriter, r *http.Request) {
+	w.Header().Add("Access-Control-Allow-Origin", "*")
 	vars := mux.Vars(r)
 	dateTime, err := strconv.ParseInt(vars["DateTime"], 10, 64)
 	if err != nil {
@@ -66,6 +69,7 @@ func getNextPicture(w http.ResponseWriter, r *http.Request) {
 }
 
 func getLastGIF(w http.ResponseWriter, r *http.Request) {
+	w.Header().Add("Access-Control-Allow-Origin", "*")
 	pics, _ := DB.GetAllPicture(appengine.NewContext(r), 1)
 	files := make([]string, len(pics))
 	for index, pic := range pics {
