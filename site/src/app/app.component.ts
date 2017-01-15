@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
+import { Location } from '@angular/common';
 import { PicturesService } from './pictures.service';
 import { Picture } from './picture';
-import {Location} from '@angular/common';
 
 @Component({
   selector: 'app-root',
