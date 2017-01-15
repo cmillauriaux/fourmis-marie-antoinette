@@ -10,6 +10,7 @@ import (
 	"strconv"
 
 	"google.golang.org/appengine"
+	"google.golang.org/appengine/user"
 )
 
 var (
@@ -26,6 +27,12 @@ func init() {
 	r.HandleFunc("/api/pictures/next/{DateTime}", getNextPicture)
 	r.HandleFunc("/api/gif/last", getLastGIF)
 	//r.HandleFunc("/api/test/generate", makeTest)
+
+	// Admin routes
+	r.HandleFunc("/api/blog/isAuthorized", isAuthorized)
+	r.HandleFunc("/api/blog/articles", getArticlesList)
+	r.HandleFunc("/api/blog/articles/add", addArticle)
+	r.HandleFunc("/api/blog/article/{articleID}", addArticle)
 
 	http.Handle("/", r)
 }
@@ -92,4 +99,92 @@ func structToJSON(structure interface{}) string {
 		return ""
 	}
 	return string(b)
+}
+
+func getArticlesList(w http.ResponseWriter, r *http.Request) {
+	message := checkAdminAuthorization(r)
+	published := false
+
+	// If user is an administrator, he can see unpublished articles
+	if message.IsAdmin {
+		published = true
+	}
+
+	// Get articles from DB
+	articles, err := DB.GetAllArticles(appengine.NewContext(r), published)
+	if err != nil {
+		fmt.Fprint(w, err.Error())
+		return
+	}
+
+	// Return response
+	fmt.Fprint(w, structToJSON(articles))
+}
+
+func getArticle(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+
+	article, err := DB.GetArticle(appengine.NewContext(r), params["articleID"])
+	if err != nil {
+		fmt.Fprint(w, err.Error())
+		return
+	}
+
+	fmt.Fprint(w, structToJSON(article))
+}
+
+func addArticle(w http.ResponseWriter, r *http.Request) {
+	message := checkAdminAuthorization(r)
+	if !message.IsAdmin || !message.IsLogin {
+		fmt.Fprint(w, "Authorisation not found")
+		return
+	}
+
+	// Decode article from body request
+	decoder := json.NewDecoder(r.Body)
+	var article Article
+	err := decoder.Decode(&article)
+	if err != nil {
+		fmt.Fprint(w, err.Error())
+		return
+	}
+	defer r.Body.Close()
+
+	_, err = DB.AddArticle(appengine.NewContext(r), &article)
+	if err != nil {
+		fmt.Fprint(w, err.Error())
+		return
+	}
+	fmt.Fprint(w, "OK")
+}
+
+func isAuthorized(w http.ResponseWriter, r *http.Request) {
+	message := checkAdminAuthorization(r)
+	fmt.Fprint(w, structToJSON(message))
+}
+
+func checkAdminAuthorization(r *http.Request) Message {
+	message := Message{NeedAdminAuthorization: true}
+	ctx := appengine.NewContext(r)
+	u := user.Current(ctx)
+
+	// If user is not logged, get signin URL
+	if u == nil {
+		url, _ := user.LoginURL(ctx, "/")
+		message.SignInURL = url
+		return message
+	}
+
+	// If user is logged
+	message.IsLogin = true
+
+	// Get Signout URL
+	url, _ := user.LogoutURL(ctx, "/")
+	message.SignOutURL = url
+
+	if u.Admin {
+		message.IsAdmin = true
+	}
+
+	return message
 }
