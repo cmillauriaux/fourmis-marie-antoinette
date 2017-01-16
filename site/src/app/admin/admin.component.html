@@ -1,0 +1,19 @@
+<div class="container">
+    <h1>Administration <span *ngIf="message && message.IsLogin && message.IsAdmin"><a href="{{message.SignOutURL}}">Se déconnecter</a></span></h1>
+    <div class="jumbotron" *ngIf="message && !message.IsLogin">
+        <h2>Authentification requise</h2>
+        <a href="{{message.SignInURL}}">S'authentifier maintenant</a>
+    </div>
+
+    <div class="jumbotron" *ngIf="message && message.IsLogin && !message.IsAdmin">
+        <h2>Droits insuffisants</h2>
+        <a href="{{message.SignOutURL}}">Se déconnecter</a>
+    </div>
+
+    <div *ngIf="message && message.IsLogin && message.IsAdmin">
+        <h2>Liste des articles</h2>
+        <div class="list-group">
+            <button type="button" class="list-group-item">Cras justo odio</button>
+        </div>
+    </div>
+</div>

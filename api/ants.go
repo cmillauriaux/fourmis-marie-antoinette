@@ -102,6 +102,7 @@ func structToJSON(structure interface{}) string {
 }
 
 func getArticlesList(w http.ResponseWriter, r *http.Request) {
+	w.Header().Add("Access-Control-Allow-Origin", "*")
 	message := checkAdminAuthorization(r)
 	published := false
 
@@ -122,6 +123,7 @@ func getArticlesList(w http.ResponseWriter, r *http.Request) {
 }
 
 func getArticle(w http.ResponseWriter, r *http.Request) {
+	w.Header().Add("Access-Control-Allow-Origin", "*")
 	params := mux.Vars(r)
 
 	article, err := DB.GetArticle(appengine.NewContext(r), params["articleID"])
@@ -134,6 +136,7 @@ func getArticle(w http.ResponseWriter, r *http.Request) {
 }
 
 func addArticle(w http.ResponseWriter, r *http.Request) {
+	w.Header().Add("Access-Control-Allow-Origin", "*")
 	message := checkAdminAuthorization(r)
 	if !message.IsAdmin || !message.IsLogin {
 		fmt.Fprint(w, "Authorisation not found")
@@ -159,6 +162,7 @@ func addArticle(w http.ResponseWriter, r *http.Request) {
 }
 
 func isAuthorized(w http.ResponseWriter, r *http.Request) {
+	w.Header().Add("Access-Control-Allow-Origin", "*")
 	message := checkAdminAuthorization(r)
 	fmt.Fprint(w, structToJSON(message))
 }

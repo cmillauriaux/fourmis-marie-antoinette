@@ -9,6 +9,7 @@ import { PicturesComponent } from './pictures/pictures.component';
 import { ProjetComponent } from './projet/projet.component';
 import { BlogComponent } from './blog/blog.component';
 import { MenuComponent } from './menu/menu.component';
+import { AdminComponent } from './admin/admin.component';
 import { Angulartics2Module, Angulartics2GoogleAnalytics } from 'angulartics2';
 
 @NgModule({
@@ -17,7 +18,8 @@ import { Angulartics2Module, Angulartics2GoogleAnalytics } from 'angulartics2';
     MenuComponent,
     PicturesComponent,
     ProjetComponent,
-    BlogComponent
+    BlogComponent,
+    AdminComponent
   ],
   imports: [
     BrowserModule,
@@ -36,6 +38,10 @@ import { Angulartics2Module, Angulartics2GoogleAnalytics } from 'angulartics2';
       {
         path: 'blog',
         component: BlogComponent
+      },
+            {
+        path: 'admin',
+        component: AdminComponent
       },
       {
         path: '',

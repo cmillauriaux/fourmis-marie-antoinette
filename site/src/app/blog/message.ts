@@ -1,5 +1,3 @@
-import { Article } from './article';
-
 export class Message {
     constructor(
         public SignInURL: string,
