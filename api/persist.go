@@ -1,11 +1,14 @@
 package ants
 
 import (
+	"errors"
 	"log"
 
 	uuid "github.com/satori/go.uuid"
 
 	"golang.org/x/net/context"
+
+	"time"
 
 	"google.golang.org/appengine/datastore"
 )
@@ -96,13 +99,16 @@ func (p *Persistance) PutDataTest(ctx context.Context) error {
 }
 
 func (p *Persistance) AddArticle(ctx context.Context, article *Article) (*datastore.Key, error) {
-	article.ID = uuid.NewV4().String()
+	if article.ID == "" {
+		article.ID = uuid.NewV4().String()
+	}
+	article.DateTime = time.Now().Unix()
 	newKey := datastore.NewKey(ctx, articlesKind, article.ID, 0, nil)
 	return datastore.Put(ctx, newKey, article)
 }
 
 func (p *Persistance) GetAllArticles(ctx context.Context, published bool) ([]Article, error) {
-	q := datastore.NewQuery(articlesKind).Filter("published =", published).Order("-DateTime").Project("DateTime", "ID", "Title", "Author", "Published", "PictureFileName")
+	q := datastore.NewQuery(articlesKind).Order("-DateTime").Project("DateTime", "ID", "Title", "Author", "Published", "PictureFileName")
 	nbElements, err := q.Count(ctx)
 	if err != nil {
 		return nil, err
@@ -133,4 +139,23 @@ func (p *Persistance) GetArticle(ctx context.Context, ID string) (*Article, erro
 	}
 
 	return &articles[0], nil
+}
+
+func (p *Persistance) DeleteArticle(ctx context.Context, ID string) error {
+	q := datastore.NewQuery(articlesKind).Filter("ID =", ID).Limit(1)
+	articles := make([]Article, 0, 1)
+	if keys, err := q.GetAll(ctx, &articles); err != nil {
+		return err
+	} else {
+		if len(keys) == 0 {
+			return errors.New("Cannot retrieve article")
+		}
+
+		err = datastore.Delete(ctx, keys[0])
+		if err != nil {
+			return err
+		}
+
+		return nil
+	}
 }

@@ -1,11 +1,7 @@
 package ants
 
-import (
-	"time"
-)
-
 type Article struct {
-	DateTime        time.Time
+	DateTime        int64
 	ID              string
 	Title           string
 	Author          string

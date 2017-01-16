@@ -10,6 +10,27 @@ indexes:
 # automatically uploaded to the admin console when you next deploy
 # your application using appcfg.py.
 
+- kind: Articles
+  properties:
+  - name: DateTime
+    direction: desc
+  - name: Author
+  - name: ID
+  - name: PictureFileName
+  - name: Published
+  - name: Title
+
+- kind: Articles
+  properties:
+  - name: published
+  - name: DateTime
+    direction: desc
+  - name: Author
+  - name: ID
+  - name: PictureFileName
+  - name: Published
+  - name: Title
+
 - kind: Pictures
   properties:
   - name: CameraID

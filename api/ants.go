@@ -3,6 +3,7 @@ package ants
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -31,8 +32,10 @@ func init() {
 	// Admin routes
 	r.HandleFunc("/api/blog/isAuthorized", isAuthorized)
 	r.HandleFunc("/api/blog/articles", getArticlesList)
-	r.HandleFunc("/api/blog/articles/add", addArticle)
-	r.HandleFunc("/api/blog/article/{articleID}", addArticle)
+	r.HandleFunc("/api/blog/articles/add", addArticle).Methods("POST")
+	r.HandleFunc("/api/blog/article/{articleID}", getArticle).Methods("GET")
+	r.HandleFunc("/api/blog/article/{articleID}", addArticle).Methods("PUT")
+	r.HandleFunc("/api/blog/article/{articleID}", deleteArticle).Methods("DELETE")
 
 	http.Handle("/", r)
 }
@@ -119,6 +122,7 @@ func getArticlesList(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Return response
+	log.Println(structToJSON(articles))
 	fmt.Fprint(w, structToJSON(articles))
 }
 
@@ -133,6 +137,25 @@ func getArticle(w http.ResponseWriter, r *http.Request) {
 	}
 
 	fmt.Fprint(w, structToJSON(article))
+}
+
+func deleteArticle(w http.ResponseWriter, r *http.Request) {
+	w.Header().Add("Access-Control-Allow-Origin", "*")
+	params := mux.Vars(r)
+
+	message := checkAdminAuthorization(r)
+	if !message.IsAdmin || !message.IsLogin {
+		fmt.Fprint(w, "Authorisation not found")
+		return
+	}
+
+	err := DB.DeleteArticle(appengine.NewContext(r), params["articleID"])
+	if err != nil {
+		fmt.Fprint(w, err.Error())
+		return
+	}
+
+	fmt.Fprint(w, "OK")
 }
 
 func addArticle(w http.ResponseWriter, r *http.Request) {
@@ -158,7 +181,8 @@ func addArticle(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprint(w, err.Error())
 		return
 	}
-	fmt.Fprint(w, "OK")
+
+	fmt.Fprint(w, structToJSON(article))
 }
 
 func isAuthorized(w http.ResponseWriter, r *http.Request) {

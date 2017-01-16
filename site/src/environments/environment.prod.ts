@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  serverURL: "http://localhost:4200/"
+  serverURL: "https://prototype-149014.appspot.com/"
 };
