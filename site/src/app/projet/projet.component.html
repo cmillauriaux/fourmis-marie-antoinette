@@ -9,38 +9,38 @@
     <p>Ce site a donc comme objectif de faire découvrir à tous les curieux l'élevage de fourmis, de leur permettre de comparer
         minute après minute, heure après heure, semaine après semaine l'évolution de la fourmilière et à tous les développeurs
         de jeter un oeil aux technologies qui m'ont permis de créer ce laboratoire en ligne. Amis curieux, amis développeurs, amis tout court,
-        soulevez avec moi le capôt de ce fabuleux projet !</p>
+        soulevez avec moi le capôt de ce fabuleux projet ! Plus d'info sur <a href="https://github.com/cmillauriaux/fourmis-marie-antoinette">GitHub</a></p>
 
     <h2>Zoom sur les technos</h2>
     <h3>Serveur</h3>
     <ul>
-        <li><b>Langage : </b> Go</li>
-        <li><b>Hébergement : </b> Google AppEngine sur Google Cloud</li>
-        <li><b>Base de données : </b> Google DataStore</li>
-        <li><b>Stockage des fichiers : </b> Google Storage</li>
-        <li><b>Architecture : </b> API REST avec une couche de persistance pour les requêtes en BDD</li>
+        <li><b>Langage : </b> <a href="https://golang.org/">Go</a></li>
+        <li><b>Hébergement : </b> <a href="https://cloud.google.com/appengine/">Google AppEngine</a> sur <a href="https://cloud.google.com/">Google Cloud</a></li>
+        <li><b>Base de données : </b> <a href="https://cloud.google.com/datastore/">Google DataStore</a></li>
+        <li><b>Stockage des fichiers : </b> <a href="https://cloud.google.com/storage/">Google Storage</a></li>
+        <li><b>Architecture : </b> <a href="https://fr.wikipedia.org/wiki/Representational_state_transfer">API REST</a> avec une couche de persistance pour les requêtes en BDD</li>
     </ul>
     <p><b>Pourquoi ce choix ?</b> Parceque que Go est mon langage fétiche pour développer des serveurs d'applications : typage fort, compilation, rigueur de la syntaxe, simplicité d'utilisation et nombreuses librairies tierces disponibles. C'est aussi l'occasion de tester Google Cloud qui propose une multitude de services dans le cloud pour construire une application sans se soucier de l'aspect système. Le petit plus ? Scaling automatique de l'infrastructure en fonction de la charge !</p>
     <h3>Prise de vue</h3>
     <ul>
-        <li><b>Langage : </b> Go + bash</li>
-        <li><b>Plateforme : </b> Raspberry Pi 3</li>
-        <li><b>Système d'exploitation : </b> Raspbian</li>
-        <li><b>Matériel de prise de vue : </b> Raspberry Cam</li>
+        <li><b>Langage : </b> <a href="https://golang.org/">Go</a> + <a href="https://fr.wikipedia.org/wiki/Bourne-Again_shell">bash</a></li>
+        <li><b>Plateforme : </b> <a href="https://www.raspberrypi.org/">Raspberry Pi 3</a></li>
+        <li><b>Système d'exploitation : </b> <a href="https://www.raspberrypi.org/downloads/raspbian/">Raspbian</a></li>
+        <li><b>Matériel de prise de vue : </b> <a href="https://www.raspberrypi.org/products/camera-module/">Raspberry Cam</a></li>
         <li><b>Architecture : </b> Une tâche cron lance la capture et l'envoi vers Google Storage toutes les minutes, via un script bash et un petit programme écrit en Go </li>
     </ul>
     <p><b>Pourquoi ce choix ?</b> Parcequ'un Raspberry ca ne coûte pas grand chose à l'achat, ca ne consomme rien même en restant allumé en permancence et ça permet d'installer un système Linux !</p>
     <h3>Le site</h3>
     <ul>
-        <li><b>Langage : </b> Angular 2</li>
-        <li><b>Framework visuel : </b> Bootstrap 3</li>
-        <li><b>Système d'authentification : </b> OAuth2 pour l'identificat des administrateurs</li>
-        <li><b>Outils : </b> ng-cli pour assister le développeur durant toutes les phases du projet</li>
+        <li><b>Langage : </b> <a href="https://angular.io/">Angular 2</a></li>
+        <li><b>Framework visuel : </b> <a href="http://getbootstrap.com/">Bootstrap 3</a></li>
+        <li><b>Système d'authentification : </b> <a href="https://oauth.net/2/">OAuth2</a> pour l'identificat des administrateurs</li>
+        <li><b>Outils : </b> <a href="http://ngcli.github.io/">ng-cli</a> pour assister le développeur durant toutes les phases du projet</li>
         <li><b>Architecture : </b> L'application Angular 2 s'alimente aurpès des services REST exposées par le serveur et affiche ensuite les images en piochant directement dans Google Storage</li>
     </ul>
     <p><b>Pourquoi ce choix ?</b> Parceque je suis un grand fan d'AngularJS pour développer des applications web dynamiques rapidement et que c'est l'occasion de mettre en pratique mes connaissances fraichement acquises sur Angular 2.</p>
     <h3>L'application mobile (à venir)</h3>
     <ul>
-        <li><b>Framework : </b> Ionic 2</li>
+        <li><b>Framework : </b> <a href="http://ionic.io/2">Ionic 2</a></li>
     </ul>
 </div>
