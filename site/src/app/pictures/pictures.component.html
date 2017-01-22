@@ -1,6 +1,5 @@
 <div class='container'>
-  <h1>Marie-ANToinette <small>and the gang</small></h1>
-  <p>Cliquez sur l'image pour obtenir la dernière photo !</p>
+  <h2>Suivez en direct l'évolution de la fourmilière !</h2>
 
   <img class="img-responsive" [src]="pictureURL" (click)="getLastPicture();" />
 
@@ -8,6 +7,7 @@
     <p>{{picture.DateTime * 1000 | date:'dd/MM/yyyy HH:mm'}}</p>
   </div>
 
+  <h3>Voyagez dans le temps et retracez l'historique de Marie-ANToinette et de ses sujets</h3>
   <div class="container-fluid">
     <div class="row">
       <div class="col-xs-4 col-md-4 text-right">

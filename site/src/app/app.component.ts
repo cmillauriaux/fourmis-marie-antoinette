@@ -4,6 +4,7 @@ import { Component } from '@angular/core';
   template: `
     <menu class="navbar"></menu>
     <router-outlet></router-outlet>
+    <!--<footer></footer>-->
   `
 })
 export class AppComponent {

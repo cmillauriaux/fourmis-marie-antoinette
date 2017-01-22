@@ -32,8 +32,10 @@ func init() {
 	// Admin routes
 	r.HandleFunc("/api/blog/isAuthorized", isAuthorized)
 	r.HandleFunc("/api/blog/articles", getArticlesList)
+	r.HandleFunc("/api/blog/articles/details", getDetailsArticlesList)
 	r.HandleFunc("/api/blog/articles/add", addArticle).Methods("POST")
 	r.HandleFunc("/api/blog/article/{articleID}", getArticle).Methods("GET")
+	r.HandleFunc("/api/blog/article/{articleID}/edit", getArticleToEdit).Methods("GET")
 	r.HandleFunc("/api/blog/article/{articleID}", addArticle).Methods("PUT")
 	r.HandleFunc("/api/blog/article/{articleID}", deleteArticle).Methods("DELETE")
 
@@ -110,15 +112,45 @@ func getArticlesList(w http.ResponseWriter, r *http.Request) {
 	published := false
 
 	// If user is an administrator, he can see unpublished articles
+	if !message.IsAdmin {
+		published = true
+	}
+
+	// Get articles from DB
+	articles, err := DB.GetAllArticles(appengine.NewContext(r), published, false)
+	if err != nil {
+		fmt.Fprint(w, err.Error())
+		return
+	}
+
+	for _, article := range articles {
+		article.Content = ""
+	}
+
+	// Return response
+	log.Println(structToJSON(articles))
+	fmt.Fprint(w, structToJSON(articles))
+}
+
+func getDetailsArticlesList(w http.ResponseWriter, r *http.Request) {
+	w.Header().Add("Access-Control-Allow-Origin", "*")
+	message := checkAdminAuthorization(r)
+	published := false
+
+	// If user is an administrator, he can see unpublished articles
 	if message.IsAdmin {
 		published = true
 	}
 
 	// Get articles from DB
-	articles, err := DB.GetAllArticles(appengine.NewContext(r), published)
+	articles, err := DB.GetAllArticles(appengine.NewContext(r), published, true)
 	if err != nil {
 		fmt.Fprint(w, err.Error())
 		return
+	}
+
+	for _, article := range articles {
+		article.Content = article.transformContentToHTML()
 	}
 
 	// Return response
@@ -127,6 +159,21 @@ func getArticlesList(w http.ResponseWriter, r *http.Request) {
 }
 
 func getArticle(w http.ResponseWriter, r *http.Request) {
+	w.Header().Add("Access-Control-Allow-Origin", "*")
+	params := mux.Vars(r)
+
+	article, err := DB.GetArticle(appengine.NewContext(r), params["articleID"])
+	if err != nil {
+		fmt.Fprint(w, err.Error())
+		return
+	}
+
+	article.Content = article.transformContentToHTML()
+
+	fmt.Fprint(w, structToJSON(article))
+}
+
+func getArticleToEdit(w http.ResponseWriter, r *http.Request) {
 	w.Header().Add("Access-Control-Allow-Origin", "*")
 	params := mux.Vars(r)
 

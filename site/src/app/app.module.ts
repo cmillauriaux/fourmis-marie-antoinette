@@ -9,6 +9,7 @@ import { PicturesComponent } from './pictures/pictures.component';
 import { ProjetComponent } from './projet/projet.component';
 import { BlogComponent } from './blog/blog.component';
 import { MenuComponent } from './menu/menu.component';
+import { FooterComponent } from './footer/footer.component';
 import { AdminComponent } from './admin/admin.component';
 import { Angulartics2Module, Angulartics2GoogleAnalytics } from 'angulartics2';
 
@@ -16,6 +17,7 @@ import { Angulartics2Module, Angulartics2GoogleAnalytics } from 'angulartics2';
   declarations: [
     AppComponent,
     MenuComponent,
+    FooterComponent,
     PicturesComponent,
     ProjetComponent,
     BlogComponent,

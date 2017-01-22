@@ -1,5 +1,14 @@
 <div class="container">
-    <h1>Blog</h1>
-    <p>A venir !</p>
+    <div class="blog-header">
+        <h1 class="blog-title">Blog</h1>
+        <p class="lead blog-description">Retrouvez tous les moments fort de la fourmilière !</p>
+    </div>
+    
+    <div *ngFor="let article of articles" class="blog-post">
+        <h2 class="blog-post-title">{{article.Title}}</h2>
+        <p class="blog-post-meta">{{article.DateTime * 1000 | date:'dd/MM/yyyy à HH:mm'}} par {{article.Author}}</p>
+        <p [innerHTML]="article.Content"></p>
+        <p *ngIf="article.PictureFileName !== ''"><img class="img-responsive" [src]="article.PictureFileName"/></p>
+    </div>
     <a routerLink="/admin">Administration</a>
 </div>

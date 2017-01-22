@@ -11,34 +11,36 @@
         de jeter un oeil aux technologies qui m'ont permis de créer ce laboratoire en ligne. Amis curieux, amis développeurs, amis tout court,
         soulevez avec moi le capôt de ce fabuleux projet !</p>
 
-    <h2>Les technos</h2>
-    <p>Section en cours de création</p>
-    <h2>Les tutos</h2>
-    <h3>Le serveur</h3>
+    <h2>Zoom sur les technos</h2>
+    <h3>Serveur</h3>
     <ul>
-        <li>Go : le langage backend nouvelle génération</li>
-        <li>Google Cloud : des services clés en main pour héberger son application</li>
-        <li>Google DataStore : une base de données NoSQL dans le cloud</li>
-        <li>Google Storage : stocker ses fichiers dans le cloud</li>
-        <li>Google AppEngine : un serveur d'application... sans serveur !</li>
-        <li>Une API REST avec Go, Google Cloud, AppEngine, DataStore et Storage</li>
+        <li><b>Langage : </b> Go</li>
+        <li><b>Hébergement : </b> Google AppEngine sur Google Cloud</li>
+        <li><b>Base de données : </b> Google DataStore</li>
+        <li><b>Stockage des fichiers : </b> Google Storage</li>
+        <li><b>Architecture : </b> API REST avec une couche de persistance pour les requêtes en BDD</li>
     </ul>
-    <h3>La prise de vue</h3>
+    <p><b>Pourquoi ce choix ?</b> Parceque que Go est mon langage fétiche pour développer des serveurs d'applications : typage fort, compilation, rigueur de la syntaxe, simplicité d'utilisation et nombreuses librairies tierces disponibles. C'est aussi l'occasion de tester Google Cloud qui propose une multitude de services dans le cloud pour construire une application sans se soucier de l'aspect système. Le petit plus ? Scaling automatique de l'infrastructure en fonction de la charge !</p>
+    <h3>Prise de vue</h3>
     <ul>
-        <li>Raspberry Pi : un ordinateur complet pour le prix d'un jeu d'occasion</li>
-        <li>Raspberry Cam : une webcam pour le raspberry</li>
-        <li>Script de prise de vue</li>
+        <li><b>Langage : </b> Go + bash</li>
+        <li><b>Plateforme : </b> Raspberry Pi 3</li>
+        <li><b>Système d'exploitation : </b> Raspbian</li>
+        <li><b>Matériel de prise de vue : </b> Raspberry Cam</li>
+        <li><b>Architecture : </b> Une tâche cron lance la capture et l'envoi vers Google Storage toutes les minutes, via un script bash et un petit programme écrit en Go </li>
     </ul>
+    <p><b>Pourquoi ce choix ?</b> Parcequ'un Raspberry ca ne coûte pas grand chose à l'achat, ca ne consomme rien même en restant allumé en permancence et ça permet d'installer un système Linux !</p>
     <h3>Le site</h3>
     <ul>
-        <li>Angular 2 : créer une application web flexible, dynamique et performante</li>
-        <li>ng-cli : L'assistant du développeur Angular 2</li>
-        <li>Angular 2 : Composants</li>
-        <li>Angular 2 : Services</li>
-        <li>Angular 2 : Routage</li>
+        <li><b>Langage : </b> Angular 2</li>
+        <li><b>Framework visuel : </b> Bootstrap 3</li>
+        <li><b>Système d'authentification : </b> OAuth2 pour l'identificat des administrateurs</li>
+        <li><b>Outils : </b> ng-cli pour assister le développeur durant toutes les phases du projet</li>
+        <li><b>Architecture : </b> L'application Angular 2 s'alimente aurpès des services REST exposées par le serveur et affiche ensuite les images en piochant directement dans Google Storage</li>
     </ul>
-    <h3>L'application mobile</h3>
+    <p><b>Pourquoi ce choix ?</b> Parceque je suis un grand fan d'AngularJS pour développer des applications web dynamiques rapidement et que c'est l'occasion de mettre en pratique mes connaissances fraichement acquises sur Angular 2.</p>
+    <h3>L'application mobile (à venir)</h3>
     <ul>
-        <li>Ionic 2 : Cordova + Angular 2 = LOVE</li>
+        <li><b>Framework : </b> Ionic 2</li>
     </ul>
 </div>

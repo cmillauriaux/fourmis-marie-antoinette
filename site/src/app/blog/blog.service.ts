@@ -26,8 +26,20 @@ export class BlogService {
             .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
     }
 
+    getDetailsArticles(): Observable<Article[]> {
+        return this.http.get(environment.serverURL + 'api/blog/articles/details')
+            .map((res: Response) => res.json())
+            .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
+    }
+
     getArticle(articleID): Observable<Article> {
         return this.http.get(environment.serverURL + 'api/blog/article/' + articleID)
+            .map((res: Response) => res.json())
+            .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
+    }
+
+    getArticleToEdit(articleID): Observable<Article> {
+        return this.http.get(environment.serverURL + 'api/blog/article/' + articleID + '/edit')
             .map((res: Response) => res.json())
             .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
     }

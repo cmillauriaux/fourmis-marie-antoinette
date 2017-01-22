@@ -68,7 +68,7 @@ export class AdminComponent {
     }
 
     getArticle(articleID) {
-        this.blogService.getArticle(articleID)
+        this.blogService.getArticleToEdit(articleID)
             .subscribe(
             article => {
                 this.article = article;

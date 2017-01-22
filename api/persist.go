@@ -107,14 +107,18 @@ func (p *Persistance) AddArticle(ctx context.Context, article *Article) (*datast
 	return datastore.Put(ctx, newKey, article)
 }
 
-func (p *Persistance) GetAllArticles(ctx context.Context, published bool) ([]Article, error) {
-	q := datastore.NewQuery(articlesKind).Order("-DateTime").Project("DateTime", "ID", "Title", "Author", "Published", "PictureFileName")
+func (p *Persistance) GetAllArticles(ctx context.Context, published bool, details bool) ([]*Article, error) {
+	q := datastore.NewQuery(articlesKind).Order("-DateTime")
+	if published {
+		q = q.Filter("Published =", published)
+	}
+
 	nbElements, err := q.Count(ctx)
 	if err != nil {
 		return nil, err
 	}
 
-	articles := make([]Article, 0, nbElements)
+	articles := make([]*Article, 0, nbElements)
 
 	if _, err := q.GetAll(ctx, &articles); err != nil {
 		return nil, err

@@ -14,7 +14,7 @@ export class PicturesComponent {
   picture: Picture;
   pictureURL: string;
   gaps = [
-    { time: 0, name: "Minute" },
+    { time: 0, name: "1 Minute" },
     { time: 600, name: "10 minutes" },
     { time: 3600, name: "1 heure" },
     { time: 21600, name: "6 heures" },

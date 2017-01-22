@@ -15,10 +15,33 @@ indexes:
   - name: DateTime
     direction: desc
   - name: Author
+  - name: Content
   - name: ID
   - name: PictureFileName
   - name: Published
   - name: Title
+
+- kind: Articles
+  properties:
+  - name: DateTime
+    direction: desc
+  - name: Author
+  - name: ID
+  - name: PictureFileName
+  - name: Published
+  - name: Title
+
+- kind: Articles
+  properties:
+  - name: DateTime
+    direction: desc
+  - name: Content
+
+- kind: Articles
+  properties:
+  - name: Published
+  - name: DateTime
+    direction: desc
 
 - kind: Articles
   properties:
