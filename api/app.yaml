@@ -4,6 +4,9 @@ runtime: go
 api_version: go1
 
 handlers:
+- url: /api/.*
+  script: _go_app
+
 - url: /(.*\.js)
   mime_type: text/javascript
   static_files: site/dist/\1
@@ -16,6 +19,3 @@ handlers:
 - url: /(.*)
   static_files: site/dist/index.html
   upload: site/dist/index\.html
-
-- url: /api/.*
-  script: _go_app
