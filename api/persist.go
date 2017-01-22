@@ -102,7 +102,11 @@ func (p *Persistance) AddArticle(ctx context.Context, article *Article) (*datast
 	if article.ID == "" {
 		article.ID = uuid.NewV4().String()
 	}
-	article.DateTime = time.Now().Unix()
+
+	if article.DateTime == 0 {
+		article.DateTime = time.Now().Unix()
+	}
+
 	newKey := datastore.NewKey(ctx, articlesKind, article.ID, 0, nil)
 	return datastore.Put(ctx, newKey, article)
 }
