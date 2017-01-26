@@ -10,7 +10,7 @@ type Article struct {
 	ID              string
 	Title           string
 	Author          string
-	Content         string
+	Content         string `datastore:",noindex"`
 	Published       bool
 	PictureFileName string
 }

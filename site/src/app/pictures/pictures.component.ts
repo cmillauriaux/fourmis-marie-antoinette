@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Location } from '@angular/common';
 import { PicturesService } from './pictures.service';
 import { Picture } from './picture';
+import { Angulartics2 } from 'angulartics2';
 
 @Component({
   selector: 'pictures',
@@ -10,6 +11,7 @@ import { Picture } from './picture';
   styleUrls: ['./pictures.component.css']
 })
 export class PicturesComponent {
+  angulartics2: Angulartics2;
   pictureServices: PicturesService;
   picture: Picture;
   pictureURL: string;
@@ -22,10 +24,12 @@ export class PicturesComponent {
   ];
   gap = this.gaps[0];
 
-  constructor(picturesService: PicturesService) {
+  constructor(picturesService: PicturesService, angulartics2: Angulartics2) {
     this.pictureServices = picturesService;
+    this.angulartics2 = angulartics2;
     this.picture = new Picture('', '', 0, 0, 0);
     this.getLastPicture();
+    angulartics2.eventTrack.next({ action: 'Last', properties: { category: 'Pictures' } });
   }
 
   getLastPicture() {
@@ -38,6 +42,7 @@ export class PicturesComponent {
       err => {
         console.log(err);
       });
+    this.angulartics2.eventTrack.next({ action: 'Last', properties: { category: 'Pictures' } });
   }
 
   getPreviousPicture() {
@@ -53,6 +58,7 @@ export class PicturesComponent {
         err => {
           console.log(err);
         });
+        this.angulartics2.eventTrack.next({ action: 'Previous', properties: { category: 'Pictures', label: this.gap.name } });
     }
   }
 
@@ -69,6 +75,7 @@ export class PicturesComponent {
         err => {
           console.log(err);
         });
+        this.angulartics2.eventTrack.next({ action: 'Next', properties: { category: 'Pictures', label: this.gap.name } });
     }
   }
 }
